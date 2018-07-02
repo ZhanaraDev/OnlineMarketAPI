@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets
+from django.http import JsonResponse
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 from mainapp.models import Product
 from .serializers import UserSerializer, GroupSerializer, ProductSerializer
@@ -32,8 +34,10 @@ class ProductViewSet(viewsets.ModelViewSet):
     def dispatch(self, request, *args, **kwargs):
         if request.method == "DELETE" and not kwargs:
             Product.objects.all().delete()
+            return JsonResponse({'message': 'Everything was deleted'}, status=200)
 
         return super().dispatch(request, *args, **kwargs)
+
 
 
 
